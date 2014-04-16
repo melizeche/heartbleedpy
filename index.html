@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8"> 
+		<title>Bancos</title>
+		<script src="data.js"></script>
+		 <link href="pure-min.css" rel="stylesheet">
+		 <link href="layout.css" rel="stylesheet">
+
+	</head>
+	<body>
+<div class="header">
+    <div class="home-menu pure-menu pure-menu-open pure-menu-horizontal ">
+        <a class="pure-menu-heading" href="">Indice de riesgo de Heartbleed (Actualizado cada 30 minutos)</a>
+
+      
+    </div>
+</div>
+
+
+         <script>document.write("<p>Ultima actualización: " + data[0].timestamp);</script>
+<h2>Como leer la tabla</h2>
+<table class="pure-table  pure-table-bordered">
+		<tr>
+		<thead>
+			<th>Color</th>
+			<th>Significado</th>
+			<th>Riesgo</th>
+			
+		</thead>
+		</tr>
+	<tbody>
+		<tr>
+			<td style='background-color:#2DFF19'>Verde</td><td>El certificado ya esta actualizado o no se utiliza OpenSSL</td><td>Virtualmente inexistente</td>
+		</tr>
+		<tr>
+			<td style='background-color:#D4D4D4'>Gris</td><td>No se pudo comprobar si se usa OpenSSL, si esta siendo utilizado entra en la categoria siguiente, sino en la anterior. Esto solo los responsables del sistema pueden aclarar.</td><td>Variable</td>
+		</tr>
+		<tr>
+			<td style='background-color:#FFFB00'>Amarillo</td><td>Se tomaron las medidas adecuadas para que la vulnerabilidad no sea explotada pero aun no se expidió un nuevo certificado(con fecha posterior al parche, 2014/04/07), el riesgo está si en el pasado alguien explotó la vulnerabilidad, es poco probable pero no se puede descartar. No hay que alarmarse dado que la renovación de certificados no es un proceso instantaneo</td><td>Media/Baja</td>
+		</tr>
+		
+		<tr>
+			<td style='background-color:#FF0000'>Rojo</td><td>Vulnerabilidad Heartbleed encontrada, se pueden filtrar datos personales e invlusive las claves de encriptación</td><td>MUY ALTO</td>
+		</tr>
+	</tbody>
+
+		
+</table>
+<p>
+  
+<center>
+	<table class="pure-table  pure-table-bordered">
+		<tr>
+		<thead>
+			<th>Entidad</th>
+			<th>URL</th>
+			<th>Fecha de Emision</th>
+			<th>Estado del Certificado</th>
+		</thead>
+	<tbody>
+	<script>
+
+    
+    for(var x in data){
+    	if(data[x].banco){
+    		document.write("<tr" + (data[x].seg=='1' ? " style='background-color:#FFFB00'>" : (data[x].seg=='0' || data[x].seg=='-1' ?  " style='background-color:#2DFF19'>" : (data[x].seg=='3' ? " style='background-color:#D4D4D4'>" : ">"))) + "<td>"+data[x].banco);
+    		document.write("</td><td>"+ data[x].url);
+    		document.write("</td><td>"+ data[x].cert_date);
+    		document.write("</td><td>"+ (data[x].seg=='1' ? "OpenSSL ya parchado pero pudo haber sido comprometido" : (data[x].seg=='0' ? "Certificado Actualizado, no Vulnerable" : (data[x].seg=='3' ? "Quizas usa OpenSSL" : (data[x].seg=='-1' ? "No usa OpenSSL" : data[x].seg)))) + "<tr>");
+    	}
+    }
+    
+		</script>
+	</tbody>
+	</table>
+	</center>
+	Estos datos en formato JSON se pueden "estirar" desde <a href='data.json'>aquí</a>
+	</body>
+<html>
